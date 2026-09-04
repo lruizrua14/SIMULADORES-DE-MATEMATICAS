@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Institución Educativa Noroccidental de Soledad | Teorema del Seno y Coseno</title>
+<style>
+:root{
+ --azul:#004b87; --azul2:#006bb3; --amarillo:#f4d21f; --rojo:#c62828;
+ --verde:#16865b; --azulclaro:#eaf4fb; --texto:#182433; --borde:#cbd8e5; --blanco:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#f5f8fb,#e8f1f8);color:var(--texto);line-height:1.45}
+header{background:linear-gradient(135deg,var(--azul),#07315b);color:#fff;padding:18px 16px}
+.header-inner{max-width:1120px;margin:auto;display:flex;align-items:center;gap:18px}
+.logo{width:92px;height:92px;object-fit:contain;background:#fff;border-radius:50%;padding:4px;flex:none}
+header h1{font-size:clamp(1.25rem,3vw,2rem);margin:0 0 4px}
+header p{margin:0;color:#e9f5ff}
+main{max-width:1120px;margin:auto;padding:18px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{border:2px solid var(--azul);background:#fff;color:var(--azul);border-radius:10px;padding:11px 15px;cursor:pointer;font-weight:700;min-height:44px}
+.tab.active{background:var(--azul);color:#fff}
+.card{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:20px;margin-bottom:16px}
+h2{margin-top:0;color:var(--azul)}
+h3{color:var(--azul2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.formula{background:var(--azulclaro);border-left:5px solid var(--amarillo);padding:14px;border-radius:8px;font-size:1.08rem;margin:10px 0}
+.note{background:#fff9d9;border-left:5px solid var(--amarillo);padding:12px;border-radius:8px}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.control{background:#f8fbfd;border:1px solid var(--borde);padding:14px;border-radius:12px}
+label{font-weight:700;display:block}
+input[type=number]{width:100%;padding:9px;border:1px solid #b7c6d5;border-radius:8px;font-size:1rem;margin-top:6px}
+.range{width:100%;accent-color:var(--azul);margin-top:10px}
+.stepper{display:flex;gap:7px;align-items:center;margin-top:8px}
+.stepper button{width:44px;height:44px;border:0;border-radius:8px;background:var(--azul);color:#fff;font-size:1.25rem;font-weight:bold;cursor:pointer}
+.stepper input{flex:1;text-align:center;margin:0}
+.primary,.secondary,.reset{border:0;border-radius:9px;padding:11px 16px;cursor:pointer;font-weight:700;min-height:44px;margin-top:12px}
+.primary{background:var(--azul);color:#fff}.secondary{background:var(--verde);color:#fff}.reset{background:#eef2f6;color:#26374a}
+.value{font-size:1.3rem;font-weight:800;color:var(--azul)}
+.result{padding:13px;border-radius:9px;background:#edf8f5;margin-top:12px}
+.correct{color:#08785f;font-weight:700}.wrong{color:var(--rojo);font-weight:700}
+canvas{width:100%;max-width:100%;height:clamp(430px,58vw,620px);border:1px solid var(--borde);border-radius:12px;background:#fff;display:block;margin:14px auto}
+.question{border:1px solid var(--borde);padding:14px;border-radius:12px;margin:12px 0}
+select,textarea{width:100%;padding:10px;border:1px solid #b7c6d5;border-radius:8px;font-size:1rem;margin-top:6px}
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:var(--amarillo);color:#263238;font-weight:800}
+.credit{text-align:center;margin:20px 0 5px;color:#38536b;font-weight:700}
+.school-line{text-align:center;font-size:.9rem;color:#5b6c7c}
+footer{text-align:center;padding:18px;color:#617285}
+@media(max-width:600px){
+ .header-inner{align-items:flex-start}.logo{width:72px;height:72px}
+ main{padding:10px}.card{padding:15px}canvas{height:390px}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="header-inner">
+<img class="logo" alt="Escudo de la Institución Educativa Noroccidental de Soledad" src="data:image/jpeg;base64,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">
+<div>
+<h1>Institución Educativa Noroccidental de Soledad</h1>
+<p>Área de Matemáticas · Simulador de Trigonometría</p>
+</div>
+</div>
+</header>
+
+<main>
+<div class="tabs">
+<button class="tab active" data-tab="conceptos">Conceptos</button>
+<button class="tab" data-tab="seno">Teorema del Seno</button>
+<button class="tab" data-tab="coseno">Teorema del Coseno</button>
+<button class="tab" data-tab="practica">Práctica y análisis</button>
+</div>
+
+<section id="conceptos" class="tabpage">
+<div class="card">
+<span class="badge">Explora · Modifica · Analiza</span>
+<h2>Teorema del Seno y Teorema del Coseno</h2>
+<div class="grid">
+<div>
+<h3>Teorema del Seno</h3>
+<p>Relaciona cada lado con el seno de su ángulo opuesto.</p>
+<div class="formula">a / sen(A) = b / sen(B) = c / sen(C)</div>
+<p>Es especialmente útil cuando se conoce un lado y su ángulo opuesto, junto con otro ángulo o lado.</p>
+</div>
+<div>
+<h3>Teorema del Coseno</h3>
+<p>Permite relacionar dos lados y el ángulo comprendido con el tercer lado.</p>
+<div class="formula">c² = a² + b² − 2ab · cos(C)</div>
+<p>Es especialmente útil en situaciones SAS o cuando se conocen los tres lados.</p>
+</div>
+</div>
+<div class="note"><b>Pregunta guía:</b> ¿Qué información conocida te permite decidir cuál teorema utilizar?</div>
+</div>
+<div class="card">
+<h2>Relación entre lados y ángulos</h2>
+<p>Observa cómo un lado se encuentra frente a su ángulo correspondiente.</p>
+<canvas id="conceptCanvas" width="700" height="380"></canvas>
+</div>
+</section>
+
+<section id="seno" class="tabpage" style="display:none">
+<div class="card">
+<h2>Simulador del Teorema del Seno</h2>
+<p>Modifica los valores utilizando <b>deslizadores</b>, las flechas <b>− / +</b> o escribiendo directamente. El triángulo se actualiza automáticamente.</p>
+<div class="controls">
+<div class="control">
+<label for="sa">Lado a <span class="value" id="saVal">10.0</span></label>
+<input id="sa" type="number" min="1" max="30" step="0.5" value="10">
+<input id="saRange" class="range" type="range" min="1" max="30" step="0.5" value="10" aria-label="Deslizador para lado a">
+<div class="stepper"><button type="button" data-target="sa" data-step="-0.5">−</button><input id="saStep" type="number" value="10" min="1" max="30" step="0.5"><button type="button" data-target="sa" data-step="0.5">+</button></div>
+</div>
+<div class="control">
+<label for="sA">Ángulo A <span class="value" id="sAVal">40.0°</span></label>
+<input id="sA" type="number" min="5" max="170" step="1" value="40">
+<input id="sARange" class="range" type="range" min="5" max="170" step="1" value="40" aria-label="Deslizador para ángulo A">
+<div class="stepper"><button type="button" data-target="sA" data-step="-1">−</button><input id="sAStep" type="number" value="40" min="5" max="170" step="1"><button type="button" data-target="sA" data-step="1">+</button></div>
+</div>
+<div class="control">
+<label for="sB">Ángulo B <span class="value" id="sBVal">65.0°</span></label>
+<input id="sB" type="number" min="5" max="170" step="1" value="65">
+<input id="sBRange" class="range" type="range" min="5" max="170" step="1" value="65" aria-label="Deslizador para ángulo B">
+<div class="stepper"><button type="button" data-target="sB" data-step="-1">−</button><input id="sBStep" type="number" value="65" min="5" max="170" step="1"><button type="button" data-target="sB" data-step="1">+</button></div>
+</div>
+</div>
+<div id="sineResult" aria-live="polite"></div>
+<canvas id="sineCanvas" width="700" height="380"></canvas>
+<button type="button" class="reset" id="resetSine">Restablecer valores</button>
+</div>
+</section>
+
+<section id="coseno" class="tabpage" style="display:none">
+<div class="card">
+<h2>Simulador del Teorema del Coseno</h2>
+<p>Varía los dos lados y el ángulo comprendido. El tercer lado se calcula automáticamente.</p>
+<div class="controls">
+<div class="control">
+<label for="ca">Lado a <span class="value" id="caVal">8.0</span></label>
+<input id="ca" type="number" min="1" max="30" step="0.5" value="8">
+<input id="caRange" class="range" type="range" min="1" max="30" step="0.5" value="8">
+<div class="stepper"><button type="button" data-target="ca" data-step="-0.5">−</button><input id="caStep" type="number" value="8" min="1" max="30" step="0.5"><button type="button" data-target="ca" data-step="0.5">+</button></div>
+</div>
+<div class="control">
+<label for="cb">Lado b <span class="value" id="cbVal">11.0</span></label>
+<input id="cb" type="number" min="1" max="30" step="0.5" value="11">
+<input id="cbRange" class="range" type="range" min="1" max="30" step="0.5" value="11">
+<div class="stepper"><button type="button" data-target="cb" data-step="-0.5">−</button><input id="cbStep" type="number" value="11" min="1" max="30" step="0.5"><button type="button" data-target="cb" data-step="0.5">+</button></div>
+</div>
+<div class="control">
+<label for="cC">Ángulo C <span class="value" id="cCVal">55.0°</span></label>
+<input id="cC" type="number" min="5" max="175" step="1" value="55">
+<input id="cCRange" class="range" type="range" min="5" max="175" step="1" value="55">
+<div class="stepper"><button type="button" data-target="cC" data-step="-1">−</button><input id="cCStep" type="number" value="55" min="5" max="175" step="1"><button type="button" data-target="cC" data-step="1">+</button></div>
+</div>
+</div>
+<div id="cosineResult" aria-live="polite"></div>
+<canvas id="cosineCanvas" width="700" height="380"></canvas>
+<button type="button" class="reset" id="resetCosine">Restablecer valores</button>
+</div>
+</section>
+
+<section id="practica" class="tabpage" style="display:none">
+<div class="card">
+<h2>Actividad de práctica y análisis</h2>
+<p><b>Propósito:</b> aplicar los teoremas, justificar la elección del método e interpretar los resultados.</p>
+<h3>Parte A — ¿Qué teorema utilizarías?</h3>
+<div id="quiz"></div>
+<button type="button" class="primary" id="checkQuiz">Calificar práctica</button>
+<div id="score" aria-live="polite"></div>
+<h3>Parte B — Banco de ejercicios</h3>
+<div class="question">
+<p>Genera un problema diferente cada vez que presiones el botón. Lee los datos, identifica el teorema adecuado, resuelve y luego comprueba tu respuesta.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<button type="button" class="primary" id="newExercise">🎲 Nuevo ejercicio</button>
+<button type="button" class="reset" id="showSolution">💡 Mostrar procedimiento</button>
+</div>
+<div id="exerciseBox" class="result" style="margin-top:14px"></div>
+
+<div class="control" style="margin-top:14px">
+<label for="exerciseAnswer">Tu respuesta</label>
+<div style="display:flex;gap:8px;align-items:center">
+<input id="exerciseAnswer" type="number" step="0.01" placeholder="Escribe el resultado" style="flex:1">
+<span id="answerUnit">unidades</span>
+</div>
+</div>
+
+<div id="exerciseFeedback" aria-live="polite"></div>
+<div id="exerciseSolution"></div>
+</div>
+
+<div class="question">
+<p><b>Pregunta de análisis:</b> Después de resolver varios ejercicios, explica qué información te permite decidir entre el teorema del seno y el teorema del coseno.</p>
+<textarea id="analysis" rows="4" placeholder="Escribe y justifica tu razonamiento..."></textarea>
+<button type="button" class="reset" id="showGuide">Ver criterio de análisis</button>
+<div id="guide"></div>
+</div></div>
+</section>
+
+<div class="credit">MG. LINCOLN RUIZ</div>
+<div class="school-line">Institución Educativa Noroccidental de Soledad · Área de Matemáticas</div>
+</main>
+<footer>Simulador educativo de Trigonometría</footer>
+
+<script>
+(function(){
+"use strict";
+const root=document;
+const clamp=(v,min,max)=>Math.min(max,Math.max(min,v));
+const rad=d=>d*Math.PI/180;
+const fmt=v=>Number(v).toFixed(2);
+
+function syncControl(id){
+ const input=root.getElementById(id), range=root.getElementById(id+"Range"), step=root.getElementById(id+"Step");
+ if(!input)return;
+ const min=Number(input.min),max=Number(input.max),stepv=Number(input.step)||1;
+ let v=Number(input.value); if(!Number.isFinite(v))v=min; v=clamp(v,min,max);
+ input.value=v; if(range)range.value=v;if(step)step.value=v;
+ const label=root.getElementById(id+"Val");if(label)label.textContent=(id.includes("A")||id.includes("B")||id==="cC")?fmt(v)+"°":fmt(v);
+}
+function bindControl(id){
+ const input=root.getElementById(id), range=root.getElementById(id+"Range"), step=root.getElementById(id+"Step");
+ [input,range,step].forEach(el=>el&&el.addEventListener("input",()=>{input.value=el.value;syncControl(id);updateAll();}));
+ syncControl(id);
+}
+["sa","sA","sB","ca","cb","cC"].forEach(bindControl);
+
+root.querySelectorAll(".stepper button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  const id=btn.dataset.target,input=root.getElementById(id);
+  let v=Number(input.value)+Number(btn.dataset.step);
+  input.value=clamp(v,Number(input.min),Number(input.max));syncControl(id);updateAll();
+ });
+});
+
+root.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+ root.querySelectorAll(".tabpage").forEach(s=>s.style.display="none");
+ root.getElementById(btn.dataset.tab).style.display="block";
+ root.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+}));
+
+function drawTriangle(id,a,b,c,title){
+ const cv=root.getElementById(id),ctx=cv.getContext("2d");
+ const W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+ ctx.font="bold 19px Arial";ctx.fillStyle="#004b87";ctx.fillText(title,22,30);
+
+ const valid=[a,b,c].every(x=>Number.isFinite(x)&&x>0)&&a+b>c&&a+c>b&&b+c>a;
+ if(!valid){
+   ctx.fillStyle="#c62828";ctx.font="17px Arial";
+   ctx.fillText("Los valores actuales no forman un triángulo válido.",22,62);
+   return;
+ }
+
+ /* Convención:
+    a está frente a A, b frente a B y c frente a C.
+    Dibujamos c como base AB. */
+ const base=c;
+ const xFromA=(b*b + c*c - a*a)/(2*c);
+ const y=Math.sqrt(Math.max(0,b*b-xFromA*xFromA));
+
+ /* Escala para que el triángulo ocupe la mayor parte del área disponible,
+    dejando espacio suficiente para etiquetas. */
+ const marginX=75, marginTop=75, marginBottom=75;
+ const availableW=W-2*marginX, availableH=H-marginTop-marginBottom;
+ const scale=Math.min(availableW/c, availableH/y)*0.90;
+
+ const A={x:(W-c*scale)/2, y:H-marginBottom};
+ const B={x:A.x+c*scale, y:A.y};
+ const C={x:A.x+xFromA*scale, y:A.y-y*scale};
+
+ ctx.lineWidth=4;ctx.strokeStyle="#004b87";ctx.beginPath();
+ ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();ctx.stroke();
+
+ ctx.fillStyle="#f4d21f";
+ [A,B,C].forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,7,0,Math.PI*2);ctx.fill()});
+
+ ctx.fillStyle="#182433";ctx.font="bold 20px Arial";
+ ctx.fillText("A",A.x-25,A.y+7);ctx.fillText("B",B.x+10,B.y+7);ctx.fillText("C",C.x-10,C.y-15);
+
+ ctx.font="bold 17px Arial";
+ ctx.fillText("c = "+fmt(c), (A.x+B.x)/2-30,A.y+31);
+ ctx.fillText("a = "+fmt(a), (B.x+C.x)/2+12,(B.y+C.y)/2);
+ ctx.fillText("b = "+fmt(b), (A.x+C.x)/2-48,(A.y+C.y)/2);
+
+ /* Indicadores de ángulos */
+ ctx.font="16px Arial";ctx.fillStyle="#c62828";
+ const Aang=Math.acos(clamp((b*b+c*c-a*a)/(2*b*c),-1,1))*180/Math.PI;
+ const Bang=Math.acos(clamp((a*a+c*c-b*b)/(2*a*c),-1,1))*180/Math.PI;
+ const Cang=180-Aang-Bang;
+ ctx.fillText("A = "+fmt(Aang)+"°",A.x+12,A.y-18);
+ ctx.fillText("B = "+fmt(Bang)+"°",B.x-105,B.y-18);
+ ctx.fillText("C = "+fmt(Cang)+"°",C.x-35,C.y+27);
+}
+function updateSine(){
+ const a=Number(root.getElementById("sa").value),A=Number(root.getElementById("sA").value),B=Number(root.getElementById("sB").value);
+ const out=root.getElementById("sineResult");
+ if(A+B>=180){out.innerHTML='<div class="result wrong">A + B debe ser menor que 180°. Disminuye uno de los ángulos.</div>';drawTriangle("sineCanvas",a,0,0,"Teorema del Seno");return;}
+ const C=180-A-B,b=a*Math.sin(rad(B))/Math.sin(rad(A)),c=a*Math.sin(rad(C))/Math.sin(rad(A));
+ out.innerHTML='<div class="result"><b>Resultado:</b> b = '+fmt(b)+' unidades · C = '+fmt(C)+'°<br><b>Comprobación de ángulos:</b> A + B + C = '+fmt(A)+'° + '+fmt(B)+'° + '+fmt(C)+'° = <b>180.00°</b><div class="formula">a/sen(A) = b/sen(B)<br>'+fmt(a)+'/sen('+fmt(A)+'°) = b/sen('+fmt(B)+'°)<br><b>b = '+fmt(b)+'</b></div></div>';
+ drawTriangle("sineCanvas",a,b,c,"Teorema del Seno");
+}
+function updateCosine(){
+ const a=Number(root.getElementById("ca").value),b=Number(root.getElementById("cb").value),C=Number(root.getElementById("cC").value);
+ const c=Math.sqrt(Math.max(0,a*a+b*b-2*a*b*Math.cos(rad(C))));
+ root.getElementById("cosineResult").innerHTML='<div class="result"><b>Resultado:</b> c = '+fmt(c)+' unidades<div class="formula">c² = a² + b² − 2ab·cos(C)<br>c² = '+fmt(a*a)+' + '+fmt(b*b)+' − 2('+fmt(a)+')('+fmt(b)+')cos('+fmt(C)+'°)<br><b>c = '+fmt(c)+'</b></div></div>';
+ drawTriangle("cosineCanvas",a,b,c,"Teorema del Coseno");
+}
+function updateAll(){updateSine();updateCosine();drawConcept();}
+function drawConcept(){
+ const cv=root.getElementById("conceptCanvas"),ctx=cv.getContext("2d");ctx.clearRect(0,0,700,380);
+ ctx.lineWidth=4;ctx.strokeStyle="#004b87";ctx.beginPath();
+ ctx.moveTo(125,330);ctx.lineTo(575,330);ctx.lineTo(355,105);ctx.closePath();ctx.stroke();
+ ctx.fillStyle="#c62828";ctx.font="bold 20px Arial";
+ ctx.fillText("A",102,337);ctx.fillText("B",582,337);ctx.fillText("C",346,94);
+ ctx.fillStyle="#182433";ctx.font="17px Arial";
+ ctx.fillText("c ↔ C",335,360);
+ ctx.fillText("a ↔ A",475,205);
+ ctx.fillText("b ↔ B",195,205);
+ ctx.fillStyle="#004b87";ctx.font="bold 17px Arial";ctx.fillText("Cada lado se relaciona con su ángulo opuesto.",30,38);
+}
+root.getElementById("resetSine").addEventListener("click",()=>{[["sa",10],["sA",40],["sB",65]].forEach(([id,v])=>{root.getElementById(id).value=v;syncControl(id)});updateSine()});
+root.getElementById("resetCosine").addEventListener("click",()=>{[["ca",8],["cb",11],["cC",55]].forEach(([id,v])=>{root.getElementById(id).value=v;syncControl(id)});updateCosine()});
+
+const questions=[
+["Se conocen un lado y su ángulo opuesto, además de otro ángulo.","seno"],
+["Se conocen dos lados y el ángulo comprendido entre ellos.","coseno"],
+["Se conocen los tres lados y se desea hallar un ángulo.","coseno"],
+["Se conoce un lado y dos ángulos del triángulo.","seno"]
+];
+root.getElementById("quiz").innerHTML=questions.map((q,i)=>'<div class="question"><b>'+String(i+1)+". "+q[0]+'</b><select id="q'+i+'"><option value="">Selecciona...</option><option value="seno">Teorema del seno</option><option value="coseno">Teorema del coseno</option></select></div>').join("");
+root.getElementById("checkQuiz").addEventListener("click",()=>{let score=0;questions.forEach((q,i)=>{if(root.getElementById("q"+i).value===q[1])score++});root.getElementById("score").innerHTML='<div class="result"><b>Resultado: '+score+'/4</b><br>'+(score===4?'¡Excelente! Identificas correctamente las condiciones de uso.':'Revisa las condiciones de aplicación e inténtalo nuevamente.')+'</div>'});
+const exerciseBank=[
+ {type:"seno",title:"Ejercicio 1 · Distancia desconocida",
+  text:"En un triángulo, el lado a mide {a} m y está frente al ángulo {A}°. El ángulo B mide {B}°. Calcula el lado b.",
+  make:()=>{const a=rand(7,18,1),A=rand(25,55,1),B=rand(45,80,1);return {a,A,B,C:180-A-B,answer:a*Math.sin(rad(B))/Math.sin(rad(A)),unit:"m"}},
+  procedure:d=>`b = a · sen(B) / sen(A)<br>b = ${fmt(d.a)} · sen(${fmt(d.B)}°) / sen(${fmt(d.A)}°)<br><b>b ≈ ${fmt(d.answer)} m</b>`},
+ {type:"seno",title:"Ejercicio 2 · Ángulo desconocido",
+  text:"En un triángulo, el lado a mide {a} m y el lado b mide {b} m. El ángulo A mide {A}°. Calcula el ángulo B.",
+  make:()=>{const a=rand(10,20,1),A=rand(30,65,1);const maxB=Math.min(75,Math.floor((a*Math.sin(rad(85))/Math.sin(rad(A)))-1));const b=rand(Math.max(5,Math.floor(a*0.55)),Math.max(6,maxB),1);let s=b*Math.sin(rad(A))/a;s=clamp(s,-0.999,0.999);let B=Math.asin(s)*180/Math.PI;return {a,b,A,B,answer:B,unit:"°"}},
+  procedure:d=>`sen(B) = b · sen(A) / a<br>sen(B) = ${fmt(d.b)} · sen(${fmt(d.A)}°) / ${fmt(d.a)}<br><b>B ≈ ${fmt(d.answer)}°</b>`},
+ {type:"coseno",title:"Ejercicio 3 · Tercer lado",
+  text:"Dos lados de un triángulo miden {a} m y {b} m y forman un ángulo de {C}°. Calcula el tercer lado.",
+  make:()=>{const a=rand(10,24,1),b=rand(10,24,1),C=rand(45,120,1);const c=Math.sqrt(a*a+b*b-2*a*b*Math.cos(rad(C)));return {a,b,C,answer:c,unit:"m"}},
+  procedure:d=>`c² = a² + b² − 2ab·cos(C)<br>c² = ${fmt(d.a*a)} + ${fmt(d.b*d.b)} − 2(${fmt(d.a)})(${fmt(d.b)})cos(${fmt(d.C)}°)<br><b>c ≈ ${fmt(d.answer)} m</b>`},
+ {type:"coseno",title:"Ejercicio 4 · Ángulo comprendido",
+  text:"Dos lados miden {a} m y {b} m. El tercer lado mide {third} m. Calcula el ángulo comprendido entre los dos primeros lados.",
+  make:()=>{const a=rand(10,22,1),b=rand(10,22,1),Cang=rand(40,120,1);const c=Math.sqrt(a*a+b*b-2*a*b*Math.cos(rad(Cang)));const cosC=(a*a+b*b-c*c)/(2*a*b);return {a,b,c,Creal:Cang,answer:Math.acos(clamp(cosC,-1,1))*180/Math.PI,unit:"°",third:c}},
+  procedure:d=>`cos(C) = (a² + b² − c²) / (2ab)<br>cos(C) = (${fmt(d.a*d.a)} + ${fmt(d.b*d.b)} − ${fmt(d.third*d.third)}) / (2·${fmt(d.a)}·${fmt(d.b)})<br><b>C ≈ ${fmt(d.answer)}°</b>`},
+ {type:"seno",title:"Ejercicio 5 · Situación contextual",
+  text:"Desde dos puntos se observa un objeto y se forma un triángulo. Un lado mide {a} m, el ángulo opuesto mide {A}° y otro ángulo mide {B}°. Calcula el lado opuesto a B.",
+  make:()=>{const a=rand(12,25,1),A=rand(30,60,1),B=rand(45,75,1);return {a,A,B,answer:a*Math.sin(rad(B))/Math.sin(rad(A)),unit:"m"}},
+  procedure:d=>`a/sen(A) = b/sen(B)<br>b = ${fmt(d.a)} · sen(${fmt(d.B)}°) / sen(${fmt(d.A)}°)<br><b>b ≈ ${fmt(d.answer)} m</b>`}
+];
+
+function rand(min,max,step){const n=Math.floor((max-min)/step)+1;return min+Math.floor(Math.random()*n)*step}
+function exerciseText(ex){
+ let t=ex.text;
+ const d=ex.data;
+ const vals={
+   a:fmt(d.a),
+   b:fmt(d.b),
+   A:fmt(d.A),
+   B:fmt(d.B),
+   C:fmt(d.C),
+   third:fmt(d.third)
+ };
+ Object.keys(vals).forEach(k=>{t=t.replace(new RegExp("\\{"+k+"\\}","g"),vals[k]);});
+ return t;
+}
+let currentExercise=null;
+function newExercise(){
+ const template=exerciseBank[Math.floor(Math.random()*exerciseBank.length)];
+ const data=template.make();
+ currentExercise={...template,data};
+ root.getElementById("exerciseBox").innerHTML=`<b>${template.title}</b><p>${exerciseText(currentExercise)}</p><p><span class="badge">${template.type==="seno"?"Teorema del Seno":"Teorema del Coseno"}</span></p>`;
+ root.getElementById("exerciseAnswer").value="";
+ root.getElementById("answerUnit").textContent=data.unit;
+ root.getElementById("exerciseFeedback").innerHTML="";
+ root.getElementById("exerciseSolution").innerHTML="";
+}
+root.getElementById("newExercise").addEventListener("click",newExercise);
+root.getElementById("exerciseAnswer").addEventListener("keydown",e=>{if(e.key==="Enter")checkExercise()});
+function checkExercise(){
+ if(!currentExercise){newExercise();return}
+ const ans=Number(root.getElementById("exerciseAnswer").value);
+ if(!Number.isFinite(ans)){root.getElementById("exerciseFeedback").innerHTML='<div class="result wrong">Escribe primero una respuesta numérica.</div>';return}
+ const real=currentExercise.data.answer;
+ const tolerance=Math.max(.15,Math.abs(real)*.01);
+ root.getElementById("exerciseFeedback").innerHTML=Math.abs(ans-real)<=tolerance
+ ?`<div class="result correct">¡Correcto! Tu respuesta está dentro del margen esperado: <b>${fmt(real)} ${currentExercise.data.unit}</b>.</div>`
+ :`<div class="result wrong">Todavía no. Revisa los datos y el teorema elegido. Tu respuesta se compara con el valor calculado.</div>`;
+}
+root.getElementById("exerciseAnswer").insertAdjacentHTML("afterend",'<button type="button" class="secondary" id="checkExercise">Comprobar respuesta</button>');
+root.getElementById("checkExercise").addEventListener("click",checkExercise);
+root.getElementById("showSolution").addEventListener("click",()=>{
+ if(!currentExercise){newExercise()}
+ root.getElementById("exerciseSolution").innerHTML=`<div class="step"><b>Procedimiento:</b><br>${currentExercise.procedure(currentExercise.data)}</div>`;
+});
+root.getElementById("showGuide").addEventListener("click",()=>root.getElementById("guide").innerHTML='<div class="note">Busca primero qué datos tienes. Si aparece un <b>lado y su ángulo opuesto</b>, junto con otro ángulo o lado compatible, piensa en el <b>teorema del seno</b>. Si aparecen <b>dos lados y el ángulo comprendido</b>, o los tres lados, piensa en el <b>teorema del coseno</b>.</div>');
+newExercise();
+
+updateAll();
+})();
+</script>
+</body>
+</html>
