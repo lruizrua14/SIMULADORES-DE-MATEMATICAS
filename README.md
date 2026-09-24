@@ -1,0 +1,1 @@
+[laboratorio_funciones_trigonometricas_v4_plano_30grados.html](https://github.com/user-attachments/files/32631487/laboratorio_funciones_trigonometricas_v4_plano_30grados.html)
