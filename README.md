@@ -1,0 +1,977 @@
+[laboratorio_funciones_trigonometricas_v4_plano_30grados.html](https://github.com/user-attachments/files/32631691/laboratorio_funciones_trigonometricas_v4_plano_30grados.html)
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratorio: Funciones Trigonométricas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul-institucional: #1B4B73;
+    --azul-oscuro: #123650;
+    --azul-claro: #E8F1F8;
+    --verde: #1F9D63;
+    --verde-claro: #E5F7EE;
+    --naranja: #E8792C;
+    --naranja-claro: #FDECDE;
+    --fondo: #F3F5F8;
+    --tarjeta: #FFFFFF;
+    --texto: #1F2A37;
+    --texto-suave: #5B6B7C;
+    --borde: #E1E7EE;
+    --sombra: 0 4px 18px rgba(18, 54, 80, 0.08);
+    --sombra-fuerte: 0 10px 30px rgba(18, 54, 80, 0.14);
+    --radio: 16px;
+    --math-font: 'STIX Two Text', 'Cambria Math', 'DejaVu Sans', serif;
+    --ui-font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family: var(--ui-font);
+    background: var(--fondo);
+    color: var(--texto);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header.app-header{
+    background: #FFFFFF;
+    color: var(--azul-oscuro);
+    padding: 20px 24px 24px;
+    text-align:center;
+    box-shadow: var(--sombra-fuerte);
+    border-bottom: 4px solid var(--azul-institucional);
+  }
+
+  header.app-header .membrete{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    max-width: 900px;
+    margin: 0 auto;
+    flex-wrap:wrap;
+  }
+
+  header.app-header .escudo{
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+    flex-shrink:0;
+  }
+
+  header.app-header .texto-membrete{
+    text-align:left;
+  }
+
+  header.app-header .institucion{
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-weight:700;
+    text-transform: uppercase;
+    color: var(--azul-institucional);
+    margin-bottom:4px;
+  }
+
+  header.app-header h1{
+    margin: 2px 0 6px;
+    font-size: clamp(1.15rem, 3vw, 1.7rem);
+    font-weight:800;
+    color: var(--azul-oscuro);
+  }
+
+  header.app-header .docente{
+    font-size:0.92rem;
+    color: var(--texto-suave);
+    font-weight:600;
+  }
+
+  @media (max-width: 520px){
+    header.app-header .membrete{ flex-direction:column; text-align:center; }
+    header.app-header .texto-membrete{ text-align:center; }
+  }
+
+  nav.tabs{
+    max-width: 1100px;
+    margin: 18px auto 0;
+    display:flex;
+    gap:10px;
+    padding: 0 16px;
+  }
+
+  nav.tabs button{
+    flex:1;
+    padding: 14px 10px;
+    border-radius: var(--radio);
+    border: 2px solid var(--borde);
+    background: var(--tarjeta);
+    color: var(--texto-suave);
+    font-family: var(--ui-font);
+    font-weight:700;
+    font-size: 0.95rem;
+    cursor:pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--sombra);
+  }
+
+  nav.tabs button.activo{
+    background: var(--azul-institucional);
+    border-color: var(--azul-institucional);
+    color:#fff;
+  }
+
+  main{
+    max-width: 1100px;
+    margin: 20px auto 60px;
+    padding: 0 16px;
+  }
+
+  .seccion{
+    display:none;
+    animation: aparecer 0.25s ease;
+  }
+  .seccion.activo{ display:block; }
+
+  @keyframes aparecer{
+    from{opacity:0; transform: translateY(6px);}
+    to{opacity:1; transform: translateY(0);}
+  }
+
+  .titulo-seccion{
+    font-size: 1.4rem;
+    font-weight:800;
+    color: var(--azul-oscuro);
+    margin: 4px 0 4px;
+  }
+
+  .subtitulo-seccion{
+    color: var(--texto-suave);
+    margin-bottom: 18px;
+    font-size:0.95rem;
+  }
+
+  .formula-destacada{
+    font-family: var(--math-font);
+    background: var(--azul-claro);
+    color: var(--azul-oscuro);
+    border-left: 5px solid var(--azul-institucional);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    margin: 10px 0 22px;
+    overflow-x:auto;
+  }
+
+  .grid-principal{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+    align-items:start;
+  }
+
+  @media (max-width: 860px){
+    .grid-principal{ grid-template-columns: 1fr; }
+  }
+
+  .tarjeta{
+    background: var(--tarjeta);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 20px;
+    border: 1px solid var(--borde);
+  }
+
+  .tarjeta h3{
+    margin:0 0 14px;
+    font-size: 1.05rem;
+    color: var(--azul-oscuro);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .dot{
+    width:10px; height:10px; border-radius:50%; display:inline-block;
+  }
+  .dot-azul{ background: var(--azul-institucional); }
+  .dot-verde{ background: var(--verde); }
+  .dot-naranja{ background: var(--naranja); }
+
+  .control{
+    margin-bottom: 18px;
+  }
+
+  .control label{
+    display:flex;
+    justify-content:space-between;
+    font-weight:600;
+    font-size:0.92rem;
+    margin-bottom:6px;
+    color: var(--texto);
+  }
+
+  .control label .valor{
+    font-family: var(--math-font);
+    color: var(--azul-institucional);
+    font-weight:700;
+    font-size:1rem;
+  }
+
+  .control-fila{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  input[type="range"]{
+    flex-grow: 1;
+    height:8px;
+    border-radius:6px;
+    -webkit-appearance:none;
+    background: var(--borde);
+    outline:none;
+  }
+
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:22px; height:22px;
+    border-radius:50%;
+    background: var(--azul-institucional);
+    border:3px solid #fff;
+    box-shadow: 0 0 0 2px var(--azul-institucional);
+    cursor:pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb{
+    width:22px; height:22px;
+    border-radius:50%;
+    background: var(--azul-institucional);
+    border:3px solid #fff;
+    box-shadow: 0 0 0 2px var(--azul-institucional);
+    cursor:pointer;
+  }
+
+  .input-numero{
+    width: 75px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1.5px solid var(--borde);
+    font-family: var(--math-font);
+    font-size: 0.95rem;
+    text-align: center;
+    background: #fff;
+    color: var(--azul-oscuro);
+    font-weight: 700;
+  }
+
+  .input-numero:focus{
+    outline: none;
+    border-color: var(--azul-institucional);
+  }
+
+  canvas{
+    width:100%;
+    height:auto;
+    display:block;
+    background: #FBFCFE;
+    border-radius: 12px;
+    border: 1px solid var(--borde);
+  }
+
+  .resultados-rapidos{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap:10px;
+    margin-top:16px;
+  }
+
+  .chip{
+    background: var(--azul-claro);
+    color: var(--azul-oscuro);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align:center;
+  }
+  .chip.verde{ background: var(--verde-claro); color:#14603F; }
+  .chip.naranja{ background: var(--naranja-claro); color:#9C4A11; }
+
+  .chip .etiqueta{
+    font-size: 0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    font-weight:700;
+    opacity:0.8;
+  }
+  .chip .cifra{
+    font-family: var(--math-font);
+    font-size: 1.15rem;
+    font-weight:700;
+    margin-top:2px;
+  }
+
+  .alerta-error{
+    display:none;
+    background: #FDECEC;
+    border-left: 5px solid #D64545;
+    color: #8A2323;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-top: 16px;
+    font-weight:600;
+    font-size:0.92rem;
+  }
+  .alerta-error.mostrar{ display:block; }
+
+  .bloque-pasos{
+    margin-top: 26px;
+  }
+
+  .bloque-pasos h2{
+    font-size:1.15rem;
+    color: var(--azul-oscuro);
+    border-bottom: 2px solid var(--borde);
+    padding-bottom:8px;
+    margin-bottom: 14px;
+  }
+
+  .paso{
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-left: 5px solid var(--verde);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: var(--sombra);
+  }
+
+  .paso:nth-of-type(2){ border-left-color: var(--naranja); }
+  .paso:nth-of-type(3){ border-left-color: var(--azul-institucional); }
+
+  .paso .num-paso{
+    font-size:0.78rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    color: var(--texto-suave);
+    margin-bottom:6px;
+  }
+
+  .paso .formula{
+    font-family: var(--math-font);
+    font-size: 1.05rem;
+    color: var(--texto);
+    line-height:1.7;
+  }
+
+  .paso .resultado-final{
+    font-weight:700;
+    color: var(--azul-institucional);
+  }
+
+  footer{
+    text-align:center;
+    padding: 18px;
+    color: var(--texto-suave);
+    font-size:0.85rem;
+  }
+
+  /* ===================== ACTIVIDAD DE PRÁCTICA ===================== */
+  .actividad-practica{
+    margin-top: 34px;
+    padding-top: 28px;
+    border-top: 3px dashed var(--borde);
+  }
+
+  .actividad-practica .titulo-seccion{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .actividad-practica .titulo-seccion .icono{
+    font-size:1.3rem;
+  }
+
+  .lista-ejercicios{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .ejercicio{
+    background: var(--tarjeta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 18px;
+    box-shadow: var(--sombra);
+    display:flex;
+    flex-direction:column;
+  }
+
+  .ejercicio .num-ejercicio{
+    display:inline-block;
+    background: var(--azul-institucional);
+    color:#fff;
+    font-weight:800;
+    font-size:0.8rem;
+    width:26px; height:26px;
+    border-radius:50%;
+    text-align:center;
+    line-height:26px;
+    margin-bottom:10px;
+  }
+
+  .ejercicio .enunciado{
+    font-size:0.92rem;
+    color: var(--texto);
+    line-height:1.5;
+    margin-bottom:12px;
+    flex-grow:1;
+  }
+
+  .ejercicio .enunciado .datos{
+    font-family: var(--math-font);
+    color: var(--azul-oscuro);
+    font-weight:600;
+  }
+
+  .ejercicio .fila-respuesta{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+  }
+
+  .ejercicio input[type="number"]{
+    flex:1;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1.5px solid var(--borde);
+    font-family: var(--math-font);
+    font-size: 0.98rem;
+    min-width:0;
+  }
+
+  .ejercicio input[type="number"]:focus{
+    outline: none;
+    border-color: var(--azul-institucional);
+  }
+
+  .ejercicio button.btn-verificar{
+    background: var(--azul-institucional);
+    color:#fff;
+    border:none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-weight:700;
+    font-size:0.88rem;
+    cursor:pointer;
+    white-space:nowrap;
+    transition: background 0.15s ease;
+  }
+
+  .ejercicio button.btn-verificar:hover{
+    background: var(--azul-oscuro);
+  }
+
+  .ejercicio .btn-solucion{
+    background:none;
+    border:none;
+    color: var(--texto-suave);
+    text-decoration: underline;
+    font-size:0.82rem;
+    cursor:pointer;
+    padding:0;
+    align-self:flex-start;
+    margin-bottom: 6px;
+  }
+
+  .ejercicio .retro{
+    font-size:0.86rem;
+    font-weight:700;
+    padding: 8px 10px;
+    border-radius:8px;
+    margin-bottom:8px;
+    display:none;
+  }
+  .ejercicio .retro.correcto{
+    display:block;
+    background: var(--verde-claro);
+    color:#14603F;
+  }
+  .ejercicio .retro.incorrecto{
+    display:block;
+    background: #FDECEC;
+    color:#8A2323;
+  }
+
+  .ejercicio .solucion{
+    display:none;
+    font-family: var(--math-font);
+    font-size:0.86rem;
+    background: var(--azul-claro);
+    color: var(--azul-oscuro);
+    padding: 10px 12px;
+    border-radius:8px;
+    line-height:1.6;
+  }
+  .ejercicio .solucion.mostrar{ display:block; }
+
+.trig-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(300px,.8fr);gap:16px}
+.grafica-box{background:#fff;border:1px solid var(--borde);border-radius:14px;padding:10px}
+#trigCanvas{width:100%;height:auto;display:block;background:#fbfcfe;border-radius:10px}
+.funciones{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.funciones button{border:1.5px solid var(--azul-institucional);background:#fff;color:var(--azul-institucional);border-radius:9px;padding:9px 12px;font-weight:800;cursor:pointer}
+.funciones button.activo{background:var(--azul-institucional);color:#fff}
+.param{border:1px solid var(--borde);background:#fbfcfe;border-radius:10px;padding:10px;margin-bottom:9px}
+.param label{display:flex;justify-content:space-between;font-weight:700;margin-bottom:6px}
+.param-grid{display:grid;grid-template-columns:1fr 88px;gap:8px;align-items:center}
+.param input[type=range]{width:100%}
+.datos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dato{background:#f5f9fc;border-left:4px solid var(--azul-institucional);border-radius:8px;padding:9px}
+.dato small{display:block;color:var(--texto-suave)} .dato b{font-size:18px;color:var(--texto)}
+.formula-grande{font-family:var(--math-font);font-size:21px;font-weight:700;text-align:center;background:var(--azul-claro);padding:12px;border-radius:9px;color:var(--texto);margin:10px 0}
+.leyenda{display:flex;flex-wrap:wrap;gap:12px;margin:9px 2px 0;font-size:13px;font-weight:700}
+.leg{display:inline-flex;align-items:center;gap:6px}.linea{width:22px;height:4px;border-radius:5px}
+.ls{background:#1677b8}.lc{background:#1f9d63}.lt{background:#e8792c}
+@media(max-width:850px){.trig-grid{grid-template-columns:1fr}.datos{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.datos{grid-template-columns:1fr}.param-grid{grid-template-columns:1fr 78px}}
+
+.stepper{
+  display:flex;
+  align-items:stretch;
+  gap:5px;
+}
+.stepper .input-numero{
+  flex:1;
+  min-width:0;
+}
+.stepper-arrows{
+  display:flex;
+  flex-direction:column;
+  width:32px;
+  gap:2px;
+}
+.stepper-arrows button{
+  flex:1;
+  min-height:22px;
+  padding:0;
+  border:1px solid #b8ccda;
+  border-radius:5px;
+  background:#eef6fb;
+  color:#164d73;
+  font-size:15px;
+  line-height:1;
+  font-weight:800;
+  cursor:pointer;
+}
+.stepper-arrows button:hover{
+  background:#d8ebf8;
+}
+.stepper-arrows button:active{
+  transform:scale(.96);
+}
+
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="membrete">
+    <img class="escudo" src="data:image/jpeg;base64,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" alt="Escudo I.E. Noroccidental de Soledad">
+    <div class="texto-membrete">
+      <div class="institucion">I.E. Noroccidental de Soledad</div>
+      <h1>Laboratorio Interactivo: Funciones Trigonométricas</h1>
+      <div class="docente">Docente: Mg. Lincoln Ruiz</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button id="tab-explora" class="activo">Explora</button>
+  <button id="tab-transforma">Transforma</button>
+  <button id="tab-caracteristicas">Características</button>
+  <button id="tab-actividad">Actividad</button>
+</nav>
+
+<main>
+<section id="seccion-explora" class="seccion activo">
+  <div class="titulo-seccion">Laboratorio — Funciones trigonométricas</div>
+  <div class="subtitulo-seccion">
+    Explora las funciones <b>seno</b>, <b>coseno</b> y <b>tangente</b>. Modifica sus parámetros y observa
+    cómo cambian la gráfica, la amplitud, el período, el desfase y la traslación vertical.
+  </div>
+
+  <div class="trig-grid">
+    <div class="tarjeta">
+      <h3><span class="dot dot-azul"></span> Gráfica dinámica</h3>
+      <div class="funciones">
+        <button type="button" class="activo" data-f="seno">Seno</button>
+        <button type="button" data-f="coseno">Coseno</button>
+        <button type="button" data-f="tangente">Tangente</button>
+        <button type="button" data-f="todas">Comparar</button>
+      </div>
+      <div class="grafica-box">
+        <canvas id="trigCanvas" width="900" height="500"></canvas>
+        <div class="leyenda">
+          <span class="leg"><i class="linea ls"></i> Seno</span>
+          <span class="leg"><i class="linea lc"></i> Coseno</span>
+          <span class="leg"><i class="linea lt"></i> Tangente</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tarjeta">
+      <h3><span class="dot dot-verde"></span> Parámetros de la función</h3><p style="margin-top:-4px;color:#607384;font-size:.9rem;">Rango ampliado: A y B hasta 10 · C hasta ±4π · D hasta ±10.</p>
+
+      <div class="param">
+        <label><span>Amplitud A</span><span id="Ashow">1</span></label>
+        <div class="param-grid">
+          <input id="A" type="range" min="0.1" max="10" step="0.1" value="1">
+          <div class="stepper">
+            <input id="An" class="input-numero" type="number" min="0.1" max="10" step="0.1" value="1">
+            <span class="stepper-arrows">
+              <button type="button" class="up" data-stepper="A" aria-label="Aumentar">▲</button>
+              <button type="button" class="down" data-stepper="A" aria-label="Disminuir">▼</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="param">
+        <label><span>Frecuencia B</span><span id="Bshow">1</span></label>
+        <div class="param-grid">
+          <input id="B" type="range" min="0.1" max="10" step="0.1" value="1">
+          <div class="stepper">
+            <input id="Bn" class="input-numero" type="number" min="0.1" max="10" step="0.1" value="1">
+            <span class="stepper-arrows">
+              <button type="button" class="up" data-stepper="B" aria-label="Aumentar">▲</button>
+              <button type="button" class="down" data-stepper="B" aria-label="Disminuir">▼</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="param">
+        <label><span>Desfase C</span><span id="Cshow">0</span></label>
+        <div class="param-grid">
+          <input id="C" type="range" min="-12.56" max="12.56" step="0.05" value="0">
+          <div class="stepper">
+            <input id="Cn" class="input-numero" type="number" min="-12.56" max="12.56" step="0.05" value="0">
+            <span class="stepper-arrows">
+              <button type="button" class="up" data-stepper="C" aria-label="Aumentar">▲</button>
+              <button type="button" class="down" data-stepper="C" aria-label="Disminuir">▼</button>
+            </span>
+          </div>
+        </div>
+        <small>En radianes.</small>
+      </div>
+
+      <div class="param">
+        <label><span>Traslación vertical D</span><span id="Dshow">0</span></label>
+        <div class="param-grid">
+          <input id="D" type="range" min="-10" max="10" step="0.1" value="0">
+          <div class="stepper">
+            <input id="Dn" class="input-numero" type="number" min="-10" max="10" step="0.1" value="0">
+            <span class="stepper-arrows">
+              <button type="button" class="up" data-stepper="D" aria-label="Aumentar">▲</button>
+              <button type="button" class="down" data-stepper="D" aria-label="Disminuir">▼</button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="funciones" style="margin-top:8px">
+        <button type="button" id="reset">↺ Función básica</button>
+        <button type="button" id="avanzado">⚡ Valores avanzados</button>
+      </div>
+      <div class="formula-grande" id="ecuacion">y = sen(x)</div>
+
+      <div class="datos">
+        <div class="dato"><small>Amplitud</small><b id="amp">1</b></div>
+        <div class="dato"><small>Período</small><b id="periodo">2π</b></div>
+        <div class="dato"><small>Desfase horizontal</small><b id="desfase">0 rad</b></div>
+        <div class="dato"><small>Línea media</small><b id="media">y = 0</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="seccion-transforma" class="seccion">
+  <div class="titulo-seccion">Transformaciones de las funciones trigonométricas</div>
+  <div class="subtitulo-seccion">Investiga qué ocurre cuando modificas cada parámetro.</div>
+
+  <div class="bloque-pasos">
+    <h2>Modelo general</h2>
+    <div class="formula-grande">y = A · sen(Bx + C) + D</div>
+    <div class="paso"><div class="num-paso">A — Amplitud</div><div class="formula">En seno y coseno: amplitud = |A|.</div></div>
+    <div class="paso"><div class="num-paso">B — Período</div><div class="formula">Seno y coseno: P = 2π/|B|.</div></div>
+    <div class="paso"><div class="num-paso">C — Desfase</div><div class="formula">Desplaza horizontalmente la gráfica: −C/B.</div></div>
+    <div class="paso"><div class="num-paso">D — Traslación</div><div class="formula">Desplaza verticalmente la gráfica y establece la línea media y = D.</div></div>
+  </div>
+
+  <div class="grid-principal">
+    <div class="tarjeta">
+      <h3><span class="dot dot-azul"></span> Seno y coseno</h3>
+      <p>Compara primero <b>y = sen(x)</b> con <b>y = 2sen(x)</b> y luego con <b>y = 2sen(2x)</b>.</p>
+      <p>Explica qué cambió y qué características permanecieron iguales.</p>
+    </div>
+    <div class="tarjeta">
+      <h3><span class="dot dot-naranja"></span> Tangente</h3>
+      <p>En la tangente estudia el <b>período</b>, el <b>desfase</b>, la <b>traslación vertical</b> y las <b>asíntotas verticales</b>.</p>
+      <div class="formula-grande">P = π/|B|</div>
+      <p><b>Importante:</b> la tangente no tiene amplitud porque no está limitada entre un máximo y un mínimo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="seccion-caracteristicas" class="seccion">
+  <div class="titulo-seccion">Características de seno, coseno y tangente</div>
+  <div class="subtitulo-seccion">Utiliza la gráfica dinámica para comprobar estas características.</div>
+
+  <div class="grid-principal">
+    <div class="tarjeta">
+      <h3><span class="dot dot-azul"></span> Función seno</h3>
+      <div class="paso"><div class="num-paso">Dominio</div><div class="formula">ℝ</div></div>
+      <div class="paso"><div class="num-paso">Rango básico</div><div class="formula">[-1, 1]</div></div>
+      <div class="paso"><div class="num-paso">Período básico</div><div class="formula">2π</div></div>
+      <div class="paso"><div class="num-paso">Amplitud básica</div><div class="formula">1</div></div>
+    </div>
+
+    <div class="tarjeta">
+      <h3><span class="dot dot-verde"></span> Función coseno</h3>
+      <div class="paso"><div class="num-paso">Dominio</div><div class="formula">ℝ</div></div>
+      <div class="paso"><div class="num-paso">Rango básico</div><div class="formula">[-1, 1]</div></div>
+      <div class="paso"><div class="num-paso">Período básico</div><div class="formula">2π</div></div>
+      <div class="paso"><div class="num-paso">Amplitud básica</div><div class="formula">1</div></div>
+    </div>
+
+    <div class="tarjeta">
+      <h3><span class="dot dot-naranja"></span> Función tangente</h3>
+      <div class="paso"><div class="num-paso">Dominio</div><div class="formula">x ≠ π/2 + kπ</div></div>
+      <div class="paso"><div class="num-paso">Rango</div><div class="formula">ℝ</div></div>
+      <div class="paso"><div class="num-paso">Período básico</div><div class="formula">π</div></div>
+      <div class="paso"><div class="num-paso">Amplitud</div><div class="formula">No definida</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="seccion-actividad" class="seccion">
+  <div class="titulo-seccion">Propuesta de actividades</div>
+  <div class="subtitulo-seccion">Predice, modifica, observa y registra tus conclusiones.</div>
+
+  <div class="tarjeta">
+    <h3><span class="dot dot-azul"></span> Actividad 1 — Reconocimiento</h3>
+    <p>Con <b>A = 1, B = 1, C = 0 y D = 0</b>, observa las tres funciones.</p>
+    <ol>
+      <li>Identifica el período de seno, coseno y tangente.</li>
+      <li>Describe el rango de cada función.</li>
+      <li>Identifica cuáles tienen amplitud.</li>
+      <li>Ubica visualmente las asíntotas de la tangente.</li>
+    </ol>
+  </div>
+
+  <div class="tarjeta">
+    <h3><span class="dot dot-verde"></span> Actividad 2 — Amplitud y período</h3>
+    <p>Para la función seno, configura sucesivamente:</p>
+    <div class="formula-grande">y = sen(x) → y = 2sen(x) → y = 2sen(2x)</div>
+    <p>Registra cómo cambian la amplitud y el período.</p>
+  </div>
+
+  <div class="tarjeta">
+    <h3><span class="dot dot-naranja"></span> Actividad 3 — Traslaciones</h3>
+    <p>Explora:</p>
+    <div class="formula-grande">y = cos(x) → y = cos(x) + 2 → y = cos(x − π/2)</div>
+    <p>Explica qué sucede con la línea media y con la posición horizontal de la gráfica.</p>
+  </div>
+
+  <div class="tarjeta">
+    <h3><span class="dot dot-azul"></span> Actividad 4 — Reto de construcción</h3>
+    <p>Construye una función seno que tenga:</p>
+    <div class="formula-grande">Amplitud = 3 &nbsp; | &nbsp; Período = π &nbsp; | &nbsp; Línea media y = 2</div>
+    <p>Escribe una posible ecuación y compruébala con los controles.</p>
+  </div>
+
+  <div class="tarjeta">
+    <h3><span class="dot dot-verde"></span> Actividad 5 — Situación de análisis</h3>
+    <p>Una magnitud periódica se modela mediante una función trigonométrica. Explica qué significado podría tener
+    la <b>amplitud</b>, el <b>período</b> y la <b>traslación vertical</b> en un fenómeno real.</p>
+  </div>
+</section>
+</main>
+<footer>Simulador educativo — I.E. Noroccidental de Soledad — Mg. Lincoln Ruiz</footer>
+
+
+<script>
+(() => {
+  const canvas=document.getElementById('trigCanvas');
+  const ctx=canvas.getContext('2d');
+  const p={A:1,B:1,C:0,D:0};
+  let fn='seno';
+
+  const $=id=>document.getElementById(id);
+  const fmt=v=>Math.abs(v)<0.0005?'0':Number(v).toFixed(2).replace(/\.00$/,'').replace(/(\.\d)0$/,'$1');
+
+  function piFmt(x){
+    if(Math.abs(x)<1e-9)return '0';
+    if(Math.abs(x-1)<1e-9)return 'π';
+    if(Math.abs(x+1)<1e-9)return '-π';
+    return fmt(x)+'π';
+  }
+
+  function sync(n,v){
+    const ranges={A:[.1,10],B:[.1,10],C:[-12.56,12.56],D:[-10,10]};
+    v=Number(v); if(!Number.isFinite(v))v=p[n];
+    v=Math.max(ranges[n][0],Math.min(ranges[n][1],v));
+    p[n]=v;
+    $(n).value=v;$(n+'n').value=v;$(n+'show').textContent=fmt(v);
+    update();draw();
+  }
+
+  ['A','B','C','D'].forEach(n=>{
+    $(n).addEventListener('input',e=>sync(n,e.target.value));
+    $(n+'n').addEventListener('input',e=>sync(n,e.target.value));
+  });
+
+  function equation(){
+    const name=fn==='seno'?'sen':fn==='coseno'?'cos':'tan';
+    let inside=(Math.abs(p.B-1)<1e-9?'x':fmt(p.B)+'x');
+    if(p.C>0)inside+=' + '+fmt(p.C);
+    if(p.C<0)inside+=' − '+fmt(Math.abs(p.C));
+    let out=(Math.abs(p.A-1)<1e-9?'':fmt(p.A))+name+'('+inside+')';
+    if(p.D>0)out+=' + '+fmt(p.D);
+    if(p.D<0)out+=' − '+fmt(Math.abs(p.D));
+    return 'y = '+out;
+  }
+
+  function update(){
+    $('ecuacion').textContent=equation();
+    const tan=fn==='tangente';
+    $('amp').textContent=tan?'No definida':fmt(Math.abs(p.A));
+    const per=tan?Math.PI/Math.abs(p.B):2*Math.PI/Math.abs(p.B);
+    $('periodo').textContent=piFmt(per/Math.PI);
+    $('desfase').textContent=(Math.abs(p.C)<1e-9?'0':fmt(-p.C/p.B))+' rad';
+    $('media').textContent='y = '+fmt(p.D);
+  }
+
+  function resize(){
+    const w=Math.max(320,canvas.clientWidth||900);
+    const h=w*500/900;
+    const dpr=window.devicePixelRatio||1;
+    canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);
+    canvas.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    draw();
+  }
+
+  function X(x,left,w){return left+(x+2*Math.PI)/(4*Math.PI)*w}
+  function Y(y,top,h){
+      const escala=Math.max(5,Math.abs(p.D)+Math.abs(p.A)+1);
+      return top+(escala-y)/(2*escala)*h;
+    }
+
+  function grid(left,top,w,h){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fbfcfe';ctx.fillRect(0,0,w+left+20,h+top+20);
+    ctx.strokeStyle='#e4ecf3';ctx.lineWidth=1;
+    const escala=Math.max(5,Math.abs(p.D)+Math.abs(p.A)+1);
+    const paso=Math.max(1,Math.ceil(escala/5));
+    for(let y=-escala;y<=escala;y+=paso){
+      const py=Y(y,top,h);
+      ctx.beginPath();ctx.moveTo(left,py);ctx.lineTo(left+w,py);ctx.stroke();
+    }
+    for(let k=-4;k<=4;k++){const x=X(k*Math.PI/2,left,w);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,top+h);ctx.stroke()}
+    const x0=X(0,left,w),y0=Y(0,top,h);
+    ctx.strokeStyle='#31495c';ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(left,y0);ctx.lineTo(left+w,y0);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x0,top);ctx.lineTo(x0,top+h);ctx.stroke();
+    ctx.fillStyle='#536979';ctx.font='12px Inter';ctx.textAlign='center';ctx.textBaseline='top';
+    [[-2*Math.PI,'−2π'],[-Math.PI,'−π'],[-Math.PI/2,'−π/2'],[0,'0'],[Math.PI/2,'π/2'],[Math.PI,'π'],[2*Math.PI,'2π']].forEach(a=>ctx.fillText(a[1],X(a[0],left,w),y0+6));
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    for(let y=-4;y<=4;y++)if(y)ctx.fillText(y,left-7,Y(y,top,h));
+  }
+
+  function plot(type,left,top,w,h){
+    const color=type==='seno'?'#1677b8':type==='coseno'?'#1f9d63':'#e8792c';
+    ctx.strokeStyle=color;ctx.lineWidth=3;ctx.beginPath();
+    let started=false,prev=null;
+    for(let i=0;i<=1200;i++){
+      const x=-2*Math.PI+i*(4*Math.PI/1200);
+      let y=type==='seno'?p.A*Math.sin(p.B*x+p.C)+p.D:
+            type==='coseno'?p.A*Math.cos(p.B*x+p.C)+p.D:
+            p.A*Math.tan(p.B*x+p.C)+p.D;
+      if(!Number.isFinite(y)||Math.abs(y)>5.15){started=false;prev=null;continue}
+      const px=X(x,left,w),py=Y(y,top,h);
+      if(!started||(prev!==null&&Math.abs(py-prev)>h*.35)){ctx.beginPath();ctx.moveTo(px,py);started=true}
+      else ctx.lineTo(px,py);
+      prev=py;
+    }
+    ctx.stroke();
+  }
+
+  function draw(){
+      // Referencias angulares cada 30° en el eje X.
+    const w=canvas.clientWidth||900,h=parseFloat(canvas.style.height)||500;
+    const left=52,top=16,gw=w-70,gh=h-48;
+    grid(left,top,gw,gh);
+    if(fn==='todas'){plot('seno',left,top,gw,gh);plot('coseno',left,top,gw,gh);plot('tangente',left,top,gw,gh)}
+    else plot(fn,left,top,gw,gh);
+  }
+
+  
+  function setAll(A,B,C,D){
+    sync('A',A); sync('B',B); sync('C',C); sync('D',D);
+  }
+
+  document.getElementById('reset').addEventListener('click',()=>{
+    setAll(1,1,0,0);
+  });
+
+  document.getElementById('avanzado').addEventListener('click',()=>{
+    setAll(5,5,Math.PI,3);
+  });
+
+
+  document.querySelectorAll('[data-stepper]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const n=btn.dataset.stepper;
+      const input=$(n+'n');
+      const minMax={A:[0.1,10],B:[0.1,10],C:[-12.56,12.56],D:[-10,10]}[n];
+      const step=n==='B'?0.1:(n==='C'?0.05:0.1);
+      let value=Number(input.value);
+      if(btn.classList.contains('up')) value+=step;
+      else value-=step;
+      value=Math.max(minMax[0],Math.min(minMax[1],value));
+      value=Math.round(value*100)/100;
+      sync(n,value);
+    });
+  });
+
+document.querySelectorAll('[data-f]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      fn=b.dataset.f;
+      document.querySelectorAll('[data-f]').forEach(x=>x.classList.toggle('activo',x===b));
+      update();draw();
+    });
+  });
+
+  function tab(n){
+    ['explora','transforma','caracteristicas','actividad'].forEach(x=>{
+      $('seccion-'+x).classList.toggle('activo',x===n);
+      $('tab-'+x).classList.toggle('activo',x===n);
+    });
+    if(n==='explora')setTimeout(draw,20);
+  }
+  ['explora','transforma','caracteristicas','actividad'].forEach(n=>$('tab-'+n).addEventListener('click',()=>tab(n)));
+
+  window.addEventListener('resize',resize);
+  update();resize();
+})();
+</script>
+
+</body>
+</html>
